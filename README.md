@@ -2,6 +2,8 @@
 
 simple python based dxf box generator
 
+
+## demo-video
 [![Demo-Video](http://img.youtube.com/vi/BPYZ8CipDVA/0.jpg)](https://www.youtube.com/watch?v=BPYZ8CipDVA "Demo-Video")
 
 
@@ -26,6 +28,8 @@ pip3 install -r requirements.txt
 this command line will generate a box.dxf and box.scad file
 
 you can use the dxf file for you cnc and the scad file to preview the box
+
+## screenshots
 
 ![gcodepreview](https://raw.githubusercontent.com/multigcs/dxfbox/main/docs/dxf.png)
 ![gcodepreview](https://raw.githubusercontent.com/multigcs/dxfbox/main/docs/scad.png)
