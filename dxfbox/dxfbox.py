@@ -21,6 +21,7 @@ def main():
     )
     parser.add_argument("--holes", help="front holes", type=str)
     parser.add_argument("--bholes", help="back holes", type=str)
+    parser.add_argument("--top", help="top plate", type=int, default=1)
     args = parser.parse_args()
 
     width = args.width
@@ -90,41 +91,49 @@ def main():
             )
         points_fb.append((width, start_height + n * tooth_len * 2 + tooth_len))
     points_fb.append((width, height))
-    for n in range(0, int(num_tooth_width)):
-        points_fb.append((width - (start_width + n * tooth_len * 2), height))
-        if rad:
-            points_fb.append(
-                (width - (start_width + n * tooth_len * 2), height - thickness + rad)
-            )
-            points_fb.append(
-                (width - (start_width + n * tooth_len * 2) - rad, height - thickness, 1)
-            )
-            points_fb.append(
-                (
-                    width - (start_width + n * tooth_len * 2 + tooth_len) + rad,
-                    height - thickness,
+    if args.top:
+        for n in range(0, int(num_tooth_width)):
+            points_fb.append((width - (start_width + n * tooth_len * 2), height))
+            if rad:
+                points_fb.append(
+                    (
+                        width - (start_width + n * tooth_len * 2),
+                        height - thickness + rad,
+                    )
                 )
-            )
-            points_fb.append(
-                (
-                    width - (start_width + n * tooth_len * 2 + tooth_len),
-                    height - thickness + rad,
-                    1,
+                points_fb.append(
+                    (
+                        width - (start_width + n * tooth_len * 2) - rad,
+                        height - thickness,
+                        1,
+                    )
                 )
-            )
-        else:
-            points_fb.append(
-                (width - (start_width + n * tooth_len * 2), height - thickness)
-            )
-            points_fb.append(
-                (
-                    width - (start_width + n * tooth_len * 2 + tooth_len),
-                    height - thickness,
+                points_fb.append(
+                    (
+                        width - (start_width + n * tooth_len * 2 + tooth_len) + rad,
+                        height - thickness,
+                    )
                 )
+                points_fb.append(
+                    (
+                        width - (start_width + n * tooth_len * 2 + tooth_len),
+                        height - thickness + rad,
+                        1,
+                    )
+                )
+            else:
+                points_fb.append(
+                    (width - (start_width + n * tooth_len * 2), height - thickness)
+                )
+                points_fb.append(
+                    (
+                        width - (start_width + n * tooth_len * 2 + tooth_len),
+                        height - thickness,
+                    )
+                )
+            points_fb.append(
+                (width - (start_width + n * tooth_len * 2 + tooth_len), height)
             )
-        points_fb.append(
-            (width - (start_width + n * tooth_len * 2 + tooth_len), height)
-        )
     points_fb.append((0, height))
     for n in range(0, int(num_tooth_height)):
         points_fb.append((0, height - (start_height + n * tooth_len * 2)))
@@ -322,47 +331,61 @@ def main():
             points_side.append(
                 (depth - thickness, start_height + n * tooth_len * 2 + tooth_len)
             )
-    points_side.append((depth - thickness, height - thickness))
-    for n in range(0, int(num_tooth_depth)):
-        if rad:
-            points_side.append(
-                (depth - (start_depth + n * tooth_len * 2) + rad, height - thickness)
-            )
-            points_side.append(
-                (depth - (start_depth + n * tooth_len * 2), height - thickness + rad, 1)
-            )
-            points_side.append((depth - (start_depth + n * tooth_len * 2), height))
-            points_side.append(
-                (depth - (start_depth + n * tooth_len * 2 + tooth_len), height)
-            )
-            points_side.append(
-                (
-                    depth - (start_depth + n * tooth_len * 2 + tooth_len),
-                    height - thickness + rad,
+    if args.top:
+        points_side.append((depth - thickness, height - thickness))
+    else:
+        points_side.append((depth - thickness, height))
+    if args.top:
+        for n in range(0, int(num_tooth_depth)):
+            if rad:
+                points_side.append(
+                    (
+                        depth - (start_depth + n * tooth_len * 2) + rad,
+                        height - thickness,
+                    )
                 )
-            )
-            points_side.append(
-                (
-                    depth - (start_depth + n * tooth_len * 2 + tooth_len) - rad,
-                    height - thickness,
-                    1,
+                points_side.append(
+                    (
+                        depth - (start_depth + n * tooth_len * 2),
+                        height - thickness + rad,
+                        1,
+                    )
                 )
-            )
-        else:
-            points_side.append(
-                (depth - (start_depth + n * tooth_len * 2), height - thickness)
-            )
-            points_side.append((depth - (start_depth + n * tooth_len * 2), height))
-            points_side.append(
-                (depth - (start_depth + n * tooth_len * 2 + tooth_len), height)
-            )
-            points_side.append(
-                (
-                    depth - (start_depth + n * tooth_len * 2 + tooth_len),
-                    height - thickness,
+                points_side.append((depth - (start_depth + n * tooth_len * 2), height))
+                points_side.append(
+                    (depth - (start_depth + n * tooth_len * 2 + tooth_len), height)
                 )
-            )
-    points_side.append((thickness, height - thickness))
+                points_side.append(
+                    (
+                        depth - (start_depth + n * tooth_len * 2 + tooth_len),
+                        height - thickness + rad,
+                    )
+                )
+                points_side.append(
+                    (
+                        depth - (start_depth + n * tooth_len * 2 + tooth_len) - rad,
+                        height - thickness,
+                        1,
+                    )
+                )
+            else:
+                points_side.append(
+                    (depth - (start_depth + n * tooth_len * 2), height - thickness)
+                )
+                points_side.append((depth - (start_depth + n * tooth_len * 2), height))
+                points_side.append(
+                    (depth - (start_depth + n * tooth_len * 2 + tooth_len), height)
+                )
+                points_side.append(
+                    (
+                        depth - (start_depth + n * tooth_len * 2 + tooth_len),
+                        height - thickness,
+                    )
+                )
+        points_side.append((thickness, height - thickness))
+    else:
+        points_side.append((thickness, height))
+
     for n in range(0, int(num_tooth_height)):
         if rad:
             points_side.append(
@@ -415,11 +438,14 @@ def main():
     layers = {
         "front": (points_fb, 0, 0),
         "back": (points_fb, width + 20, 0),
-        "top": (points_top, 0, height + 20),
-        "bottom": (points_top, width + 20, height + 20),
         "left": (points_side, (width + 20) * 2, 0),
         "right": (points_side, (width + 20) * 2, height + 20),
     }
+    if args.top:
+        layers["bottom"] = (points_top, width + 20, height + 20)
+        layers["top"] = (points_top, 0, height + 20)
+    else:
+        layers["bottom"] = (points_top, 0, height + 20)
 
     for layer, data in layers.items():
         last = (data[0][0][0] + data[1], data[0][0][1] + data[2])
