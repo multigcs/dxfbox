@@ -3,6 +3,7 @@ import math
 import sys
 
 import ezdxf
+from ezdxf import zoom
 
 
 def main():
@@ -513,6 +514,8 @@ def main():
                 msp.add_circle(
                     (pos_x, height - pos_y), diameter / 2, dxfattribs={"layer": layer}
                 )
+
+    zoom.extents(msp)  # type: ignore
 
     print(f"writing {args.name}.dxf")
     doc.saveas(f"{args.name}.dxf")
